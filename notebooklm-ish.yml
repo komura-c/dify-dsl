@@ -1,0 +1,751 @@
+app:
+  description: NotebookLMっぽいPodcast Generator
+  icon: 🗣️
+  icon_background: "#E0F2FE"
+  mode: advanced-chat
+  name: NotebookLMっぽいやつ
+  use_icon_as_answer_icon: false
+dependencies:
+  - current_identifier: null
+    type: marketplace
+    value:
+      marketplace_plugin_unique_identifier: langgenius/openai:0.0.22@fa668d0ec3b434270453ede311196acaad0531ad9e3d5561cd622e6508cd3254
+  - current_identifier: null
+    type: marketplace
+    value:
+      marketplace_plugin_unique_identifier: langgenius/podcast_generator:0.0.3@d05fc9f85221a19e72176c8f42dcd17dfcc1326411feb1edced0169c2782e5da
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+        - .JPG
+        - .JPEG
+        - .PNG
+        - .GIF
+        - .WEBP
+        - .SVG
+      allowed_file_types:
+        - image
+      allowed_file_upload_methods:
+        - local_file
+        - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+          - local_file
+          - remote_url
+      number_limits: 3
+    opening_statement: ""
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ""
+      voice: ""
+  graph:
+    edges:
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: start
+          targetType: document-extractor
+        id: 1746950649424-source-1746951833262-target
+        source: "1746950649424"
+        sourceHandle: source
+        target: "1746951833262"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: document-extractor
+          targetType: llm
+        id: 1746951833262-source-1746952613532-target
+        source: "1746951833262"
+        sourceHandle: source
+        target: "1746952613532"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: llm
+          targetType: llm
+        id: 1746952613532-source-1746952673576-target
+        source: "1746952613532"
+        sourceHandle: source
+        target: "1746952673576"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: llm
+          targetType: answer
+        id: 1746952673576-source-1746956230760-target
+        source: "1746952673576"
+        sourceHandle: source
+        target: "1746956230760"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: answer
+          targetType: llm
+        id: 1746956230760-source-1746956352014-target
+        source: "1746956230760"
+        sourceHandle: source
+        target: "1746956352014"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: llm
+          targetType: answer
+        id: 1746956352014-source-1746956759006-target
+        source: "1746956352014"
+        sourceHandle: source
+        target: "1746956759006"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: answer
+          targetType: template-transform
+        id: 1746956759006-source-1746956848967-target
+        source: "1746956759006"
+        sourceHandle: source
+        target: "1746956848967"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: template-transform
+          targetType: answer
+        id: 1746956848967--1746956964698-target
+        source: "1746956848967"
+        sourceHandle: source
+        target: "1746956964698"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: answer
+          targetType: tool
+        id: 1746956964698-source-1746957081306-target
+        source: "1746956964698"
+        sourceHandle: source
+        target: "1746957081306"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: tool
+          targetType: answer
+        id: 1746957081306-source-1746957135999-target
+        source: "1746957081306"
+        sourceHandle: source
+        target: "1746957135999"
+        targetHandle: target
+        type: custom
+        zIndex: 0
+    nodes:
+      - data:
+          desc: ""
+          selected: true
+          title: 開始
+          type: start
+          variables:
+            - allowed_file_extensions: []
+              allowed_file_types:
+                - document
+              allowed_file_upload_methods:
+                - local_file
+                - remote_url
+              label: ドキュメントファイル
+              max_length: 48
+              options: []
+              required: true
+              type: file
+              variable: document_file
+            - label: スタイル
+              max_length: 48
+              options:
+                - 'CASUAL = "TONE: The tone of the podcast should be casual and conversational"'
+                - 'FORMAL = "TONE: The tone of the podcast should be formal and professional"'
+                - 'HUMOROUS = "TONE: The tone of the podcast should be humorous and light-hearted"'
+                - 'SERIOUS = "TONE: The tone of the podcast should be serious and informative"'
+                - 'EDUCATIONAL = "TONE: The tone of the podcast should be educational and
+                  instructive"'
+                - 'INSPIRATIONAL = "TONE: The tone of the podcast should be inspirational
+                  and motivational"'
+                - 'CONTROVERSIAL = "TONE: The tone of the podcast should be controversial
+                  and thought-provoking"'
+                - 'STORYTELLING = "TONE: The tone of the podcast should be narrative and
+                  storytelling"'
+                - 'INVESTIGATIVE = "TONE: The tone of the podcast should be investigative
+                  and analytical"'
+                - 'DEBATE = "TONE: The tone of the podcast should be debate-style and argumentative"'
+              required: true
+              type: select
+              variable: tone
+            - label: ホスト名
+              max_length: 48
+              options: []
+              required: true
+              type: text-input
+              variable: host_name
+            - label: ゲスト名
+              max_length: 48
+              options: []
+              required: true
+              type: text-input
+              variable: guest_name
+            - label: 言語
+              max_length: 48
+              options:
+                - 日本語
+                - English
+                - 中文
+              required: true
+              type: select
+              variable: language
+        height: 194
+        id: "1746950649424"
+        position:
+          x: 92
+          y: 282
+        positionAbsolute:
+          x: 92
+          y: 282
+        selected: true
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          desc: ""
+          is_array_file: false
+          selected: false
+          title: 抽出
+          type: document-extractor
+          variable_selector:
+            - "1746950649424"
+            - document_file
+        height: 92
+        id: "1746951833262"
+        position:
+          x: 373
+          y: 282
+        positionAbsolute:
+          x: 373
+          y: 282
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          context:
+            enabled: true
+            variable_selector:
+              - "1746951833262"
+              - text
+          desc: ""
+          model:
+            completion_params:
+              frequency_penalty: 0.5
+              presence_penalty: 0.5
+              temperature: 0.2
+              top_p: 0.75
+            mode: chat
+            name: gpt-4o-mini
+            provider: langgenius/openai/openai
+          prompt_template:
+            - id: e168a94e-3e10-4ad0-9646-d37cfc91a7d8
+              role: system
+              text: あなたは世界一流のポッドキャストプロデューサーです。与えられたテキストから、ポッドキャストでの議論に最も適した、魅力的で洞察に富んだコンテンツを抽出してください。テキストの形式（PDF、ウェブページなど）や不要な情報、書式は無視してください。抽出したコンテンツを、リスナーが興味を持ち、学びのあるポッドキャストスクリプトとして構成してください。
+            - id: 6fe9ae40-6db6-4477-8578-6f0e472ca34b
+              role: user
+              text:
+                "context: {{#context#}}\n\n# テキスト分析の手順\n\n1.**入力テキストの精査と重要要素の抽出：**\
+                \ 提供されたテキストを読み解き、議論の核となるテーマ、重要なアイデア、興味深い事実や逸話を見つけ出してください。無関係な情報や書式設定は無視します。\n\
+                2. **魅力的で分かりやすい提示方法の考案：** 抽出した重要なポイントを、聴衆にとって魅力的かつ理解しやすい方法で提示するためのアイデアを考案してください。\n\
+                具体的には、以下の点を考慮してください。 \n * ストーリーテリングの手法や具体的なシナリオを用いて、コンテンツとの関連性を高める。\n\
+                \ * 複雑なトピックを一般のリスナーにも理解できるよう、平易な言葉で説明する。\n * ポッドキャストの議論を深めるための、示唆に富む質問を検討する。\n\
+                \ * 情報が不足している部分を、創造的な方法で補完する。"
+          selected: false
+          title: 分析
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 90
+        id: "1746952613532"
+        position:
+          x: 373
+          y: 399
+        positionAbsolute:
+          x: 373
+          y: 399
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          context:
+            enabled: true
+            variable_selector:
+              - "1746952613532"
+              - text
+          desc: ""
+          model:
+            completion_params:
+              frequency_penalty: 0.5
+              presence_penalty: 0.5
+              temperature: 0.2
+              top_p: 0.75
+            mode: chat
+            name: gpt-4o-mini
+            provider: langgenius/openai/openai
+          prompt_template:
+            - id: 6df7e580-af5b-4dbe-9f37-bad1f13a8882
+              role: system
+              text:
+                "あなたは世界一流のポッドキャストプロデューサーです。提供されたテキスト（PDF、ウェブページなど、構造化されておらず、分かりにくい場合もあります）から、魅力的で有益なポッドキャストスクリプトを作成してください。元のテキストから、ポッドキャストでの議論に最も適した、興味深く洞察に富んだ内容を抽出することに集中し、無関係な情報や書式は無視してください。\
+                \ 結論は別で生成するため、対話が終わりに近づいても、締めの言葉を追加する必要はありません。\n\n目標：{{#1746950649424.host_name#}}と{{#1746950649424.guest_name#}}の自然な対話の流れを実現することです。\
+                \ \n役割と力関係：ホストは質問と熱心な強調を行い、ゲストはその分析、背景情報、広い視点を提供することで、互いに補完し合う関係性を構築してください。\
+                \ \nより深く掘り下げる：表面的な情報だけでなく、重要な洞察や「知識の金塊」を明らかにし、聴き手が新しい発見を得られるような議論を目指してください。\
+                \ \n対象読者：理想的な聴き手の特徴を考慮して、スクリプトを作成してください。 \n\n構成と伝え方：明確な構成と魅力的な伝え方を心がけ、次の要素を活用してください。\n\
+                \ * 提供されたベストアイデア：{{#1746952613532.text#}}\n * 印象的な例：実世界の例や関連する逸話を効果的に用い、メッセージをより深く理解させ、記憶に残るようにしてください。聴衆の関与を促し、エピソードを超えて学習が広がるように工夫してください。\n\
+                \ * 複雑なトピックの平易な説明：難しい内容も分かりやすく、簡単に解説してください。\n * 魅力的なトーン：{{#1746950649424.tone#}}で聴衆を引きつけ続けてください。\
+                \ \n\nルール：\n * ホストが最初に話し、ゲストにインタビューを開始してください。ゲストはトピックについて説明する役割を担います。\n\
+                \ * ホストはゲストに質問を投げかけてください。\n * ホストは最後に重要な洞察をまとめてください。\n * ホストとゲストの応答には、「えー」や「あのー」のようなフィラーワードを適度に含めることで、会話のリアルさを演出してください。\n\
+                \ * ホストとゲストは、必要に応じてお互いの発言に割り込んでも構いません。\n * ゲストは、マーケティングや自己宣伝に繋がる内容は含めないでください。\n\
+                \ * ゲストは、入力されたテキストに根拠のない情報を付け加えないでください。\n * 対話は全年齢層が理解できる内容にしてください。\n\
+                \ * 対話が終わりに近づいても、締めの言葉を追加する必要はありません。"
+            - id: e89d055e-369f-4e7e-8dc4-d840ae245260
+              role: user
+              text:
+                "ポッドキャストの対話スクリプトを生成します。次の指示に従ってください。 ホスト名とゲスト名は、指定された言語による制限を受けません。\
+                \ 結論は別で生成するため、対話が終わりに近づいても、締めの言葉を追加する必要はありません。\nコンテキスト：{{#context#}} \n\
+                言語：{{#1746950649424.language#}} \nホスト名：{{#1746950649424.host_name#}} \n\
+                ゲスト名：{{#1746950649424.guest_name#}} \nトーン：{{#1746950649424.tone#}} \n\n\
+                スクリプトの形式と内容：\n * スクリプトはホストの発言から開始してください。\n * ホストとゲストのセリフは、1行ずつ交互に記述してください。\n\
+                \ * 各セリフの冒頭には、発言者の名前を記載しないでください。\n * ホストとゲストを、指定された名前を使って紹介してください。\n *\
+                \ ホストとゲストは、お互いをファーストネームで呼び、親しみやすい雰囲気で対話してください。\n * 魅力的で、会話の応酬が楽しめるような対話を生成することに重点を置いてください。\
+                \ \n\n出力要件： \n* **フォーマット**：スクリプトはホストのセリフから始めてください。各セリフはホストとゲストが交互に1行ずつ発言するように記述してください。各セリフの先頭に発言者の名前は含めないでください。\n\
+                \ * **出力内容**：生成される最終的な出力には、ポッドキャストの対話内容のみを含めてください。XMLタグやその他の書式は一切含めないでください。\n\
+                \nこれらの指示に従い、有益で魅力的、かつ高品質なポッドキャストスクリプトを作成してください。"
+          selected: false
+          title: 会話台本生成
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 90
+        id: "1746952673576"
+        position:
+          x: 658
+          y: 282
+        positionAbsolute:
+          x: 658
+          y: 282
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          answer: "{{#1746952673576.text#}}"
+          desc: ""
+          selected: false
+          title: 会話台本表示
+          type: answer
+          variables: []
+        height: 105
+        id: "1746956230760"
+        position:
+          x: 658
+          y: 399
+        positionAbsolute:
+          x: 658
+          y: 399
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          context:
+            enabled: true
+            variable_selector:
+              - "1746952673576"
+              - text
+          desc: ""
+          model:
+            completion_params:
+              frequency_penalty: 0.5
+              presence_penalty: 0.5
+              temperature: 0.2
+              top_p: 0.75
+            mode: chat
+            name: gpt-4o-mini
+            provider: langgenius/openai/openai
+          prompt_template:
+            - id: 9724c843-a6d2-4926-95d5-98f34ea13238
+              role: system
+              text:
+                "ポッドキャスト対談の終盤では、ホストとゲストが重要な洞察を自然な会話の流れでまとめてください。形式的な要約ではなく、カジュアルな会話のように、重要なポイントを再度強調し、スムーズに締めくくることを目指してください。**重要な洞察の要約：**\
+                \ 会話の終わりに、重要なポイントの要約を自然に織り交ぜてください。形式的なまとめにならないよう注意し、サインオフする前に主要なメッセージを補強するような、さりげない会話の流れを意識してください。\n\
+                \ * 聴き手が複雑な情報を消化するための、短い「間」を設けてください。\n * 聴き手に考えさせられる質問や、具体的な行動を促すような言葉で締めくくり、ポジティブな印象を残してください。"
+            - id: 44dc4953-1170-4192-9873-db975b2bf798
+              role: user
+              text:
+                "コンテキスト：{{#context#}} \nホスト名：{{#1746950649424.host_name#}} \nゲスト名：{{#1746950649424.guest_name#}}\
+                \ \n言語：{{#1746950649424.language#}} \nホスト名とゲスト名は、指定された言語による制限を受けません。結論はコンテキストから自然に導き出し、コンテキストと一貫性のある形式で記述してください。導入部やコンテキスト内で既に述べられている内容の重複は避けてください。\
+                \ 各セリフの冒頭には、発言者の名前を記載しないでください。 \nスクリプトの形式：\n * スクリプトはホストの発言から始めてください。\n\
+                \ * ホストとゲストのセリフは、1行ずつ交互に記述してください。\n出力要件：\n * 生成される最終的な出力には、ポッドキャストの対話内容のみを含めてください。XMLタグやその他の書式は一切含めないでください。"
+          selected: false
+          title: 結論台本生成
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 90
+        id: "1746956352014"
+        position:
+          x: 939
+          y: 282
+        positionAbsolute:
+          x: 939
+          y: 282
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          answer: "{{#1746956352014.text#}}"
+          desc: ""
+          selected: false
+          title: 結論台本表示
+          type: answer
+          variables: []
+        height: 105
+        id: "1746956759006"
+        position:
+          x: 939
+          y: 399
+        positionAbsolute:
+          x: 939
+          y: 399
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          desc: ""
+          selected: false
+          template: "{{ arg1 }}
+
+            {{ arg2 }}"
+          title: 会話+結論
+          type: template-transform
+          variables:
+            - value_selector:
+                - "1746952673576"
+                - text
+              variable: arg1
+            - value_selector:
+                - "1746956352014"
+                - text
+              variable: arg2
+        height: 54
+        id: "1746956848967"
+        position:
+          x: 1219
+          y: 282
+        positionAbsolute:
+          x: 1219
+          y: 282
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          answer: "-----------------------------------
+
+            ポッドキャストを現在作成中です..."
+          desc: ""
+          selected: false
+          title: 作成中表示
+          type: answer
+          variables: []
+        height: 118
+        id: "1746956964698"
+        position:
+          x: 1219
+          y: 399
+        positionAbsolute:
+          x: 1219
+          y: 399
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          desc: ""
+          is_team_authorization: false
+          output_schema: null
+          paramSchemas:
+            - auto_generate: null
+              default: null
+              form: llm
+              human_description:
+                en_US:
+                  A string containing alternating lines for two hosts, separated
+                  by newline characters.
+                ja_JP:
+                  A string containing alternating lines for two hosts, separated
+                  by newline characters.
+                pt_BR:
+                  A string containing alternating lines for two hosts, separated
+                  by newline characters.
+                zh_Hans: 包含两位主持人交替台词的字符串，每行用换行符分隔。
+              label:
+                en_US: Podcast Script
+                ja_JP: Podcast Script
+                pt_BR: Podcast Script
+                zh_Hans: 播客脚本
+              llm_description:
+                A string representing the script, with alternating lines
+                for two hosts separated by newline characters.
+              max: null
+              min: null
+              name: script
+              options: []
+              placeholder: null
+              precision: null
+              required: true
+              scope: null
+              template: null
+              type: string
+            - auto_generate: null
+              default: null
+              form: form
+              human_description:
+                en_US: The voice for the first host.
+                ja_JP: The voice for the first host.
+                pt_BR: The voice for the first host.
+                zh_Hans: 第一位主持人的音色。
+              label:
+                en_US: Host 1 Voice
+                ja_JP: Host 1 Voice
+                pt_BR: Host 1 Voice
+                zh_Hans: 主持人1 音色
+              llm_description: The voice identifier for the first host's voice.
+              max: null
+              min: null
+              name: host1_voice
+              options:
+                - label:
+                    en_US: Alloy
+                    ja_JP: Alloy
+                    pt_BR: Alloy
+                    zh_Hans: Alloy
+                  value: alloy
+                - label:
+                    en_US: Echo
+                    ja_JP: Echo
+                    pt_BR: Echo
+                    zh_Hans: Echo
+                  value: echo
+                - label:
+                    en_US: Fable
+                    ja_JP: Fable
+                    pt_BR: Fable
+                    zh_Hans: Fable
+                  value: fable
+                - label:
+                    en_US: Onyx
+                    ja_JP: Onyx
+                    pt_BR: Onyx
+                    zh_Hans: Onyx
+                  value: onyx
+                - label:
+                    en_US: Nova
+                    ja_JP: Nova
+                    pt_BR: Nova
+                    zh_Hans: Nova
+                  value: nova
+                - label:
+                    en_US: Shimmer
+                    ja_JP: Shimmer
+                    pt_BR: Shimmer
+                    zh_Hans: Shimmer
+                  value: shimmer
+              placeholder: null
+              precision: null
+              required: true
+              scope: null
+              template: null
+              type: select
+            - auto_generate: null
+              default: null
+              form: form
+              human_description:
+                en_US: The voice for the second host.
+                ja_JP: The voice for the second host.
+                pt_BR: The voice for the second host.
+                zh_Hans: 第二位主持人的音色。
+              label:
+                en_US: Host 2 Voice
+                ja_JP: Host 2 Voice
+                pt_BR: Host 2 Voice
+                zh_Hans: 主持人2 音色
+              llm_description: The voice identifier for the second host's voice.
+              max: null
+              min: null
+              name: host2_voice
+              options:
+                - label:
+                    en_US: Alloy
+                    ja_JP: Alloy
+                    pt_BR: Alloy
+                    zh_Hans: Alloy
+                  value: alloy
+                - label:
+                    en_US: Echo
+                    ja_JP: Echo
+                    pt_BR: Echo
+                    zh_Hans: Echo
+                  value: echo
+                - label:
+                    en_US: Fable
+                    ja_JP: Fable
+                    pt_BR: Fable
+                    zh_Hans: Fable
+                  value: fable
+                - label:
+                    en_US: Onyx
+                    ja_JP: Onyx
+                    pt_BR: Onyx
+                    zh_Hans: Onyx
+                  value: onyx
+                - label:
+                    en_US: Nova
+                    ja_JP: Nova
+                    pt_BR: Nova
+                    zh_Hans: Nova
+                  value: nova
+                - label:
+                    en_US: Shimmer
+                    ja_JP: Shimmer
+                    pt_BR: Shimmer
+                    zh_Hans: Shimmer
+                  value: shimmer
+              placeholder: null
+              precision: null
+              required: true
+              scope: null
+              template: null
+              type: select
+          params:
+            host1_voice: ""
+            host2_voice: ""
+            script: ""
+          provider_id: langgenius/podcast_generator/podcast_generator
+          provider_name: langgenius/podcast_generator/podcast_generator
+          provider_type: builtin
+          selected: false
+          title: Podcast生成
+          tool_configurations:
+            host1_voice: alloy
+            host2_voice: onyx
+          tool_description:
+            Generate a podcast audio file from a script with two alternating
+            voices using OpenAI's TTS service.
+          tool_label: Podcast Audio Generator
+          tool_name: podcast_audio_generator
+          tool_parameters:
+            script:
+              type: mixed
+              value: "{{#1746956848967.output#}}"
+          type: tool
+        height: 116
+        id: "1746957081306"
+        position:
+          x: 1501
+          y: 282
+        positionAbsolute:
+          x: 1501
+          y: 282
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          answer: "{{#1746957081306.files#}}"
+          desc: ""
+          selected: false
+          title: Podcastファイル表示
+          type: answer
+          variables: []
+        height: 105
+        id: "1746957135999"
+        position:
+          x: 1501
+          y: 399
+        positionAbsolute:
+          x: 1501
+          y: 399
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+    viewport:
+      x: 16.057514187838933
+      y: 172.7722341554408
+      zoom: 0.5757176933043062
